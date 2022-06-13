@@ -18,16 +18,14 @@ try {
 }
 
 process.on('unhandledRejection', err => {
-    console.log('unhandledRejection', err.message)
+    console.log('Unhandled Rejection:', err.message)
 });
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (rq, res) => {
-    res.sendFile(__dirname + '/views/index.html')
-});
+app.use('/api/users', require('./routes/user'));
 
 // io.on('connection', socket => {
     
