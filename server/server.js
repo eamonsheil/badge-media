@@ -7,6 +7,12 @@ const http = require('http').Server(app);
 const port = process.env.PORT || 5000;
 
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/users', require('./routes/user'));
+
+
 try {
     mongoose.connect(process.env.DATABASE_URI, {
         useUnifiedTopology: true,
@@ -18,14 +24,10 @@ try {
 }
 
 process.on('unhandledRejection', err => {
-    console.log('Unhandled Rejection:', err.message)
+    console.log('Unhandled Rejection:', err)
 });
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use('/api/users', require('./routes/user'));
 
 // io.on('connection', socket => {
     

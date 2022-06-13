@@ -1,74 +1,69 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
 
-const register = async (req, res) => {
-    const user = new User({
+const register = asyncHandler(async(req, res) => {
+    
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+
+    const user = await User.create({
         name: req.body.name,
         email: req.body.email,
-        password: await bcrypt.hash(req.body.password, 8),
-    });
+        password: hashedPassword
+    })
 
-    user.save((err,user) => {
-        if (err) {
-            res.status(500)
-               .send({
-                   message: err
-               });
-               return;
-        } else {
-            res.status(200)
-               .send({
-                   message: 'User registered successfully'
-               })
-        }
-    });
-};
 
-const login = async (req, res) => {
-    User.find({ email: req.body.email})
-        .exec((err, user) => {
-            if (err){ 
-                res.status(500)
-                   .send({
-                        message: err
-                   });
-                return;
-            }
-            if (!user) {
-                return res.status(404)
-                          .send({
-                              message: "User not found"
-                          });
-            }
-            const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (user) {
+        const token = await generateToken(user._id)
+        res.status(200).json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            accessToken: token
+        })
+    }
+})
 
-            if (!passwordIsValid) {
-                return res.status(401)
-                          .send({
-                              accessToken: null,
-                              message: "Invalid Password"
-                          })
-            }
+const login = asyncHandler(async (req, res) => {
+    const user = await User.findOne({email: req.body.email})
 
-            const token = jwt.sign({
-                id: user.id
-            },  process.env.JWT_SECRET, { 
-                expiresIn: "1h"
+
+    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+        const token = generateToken(user._id);
+    
+        return res
+            .cookie("token", token, {
+                httpOnly: true
             })
+            .json({
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    name: user.name
+                },
+                message: "Login Successful",
+                token: token,
+            })
+    } else {
+        res.status(400)
+        throw new Error ('Invalid Login')
+    }
 
-            res.status(200)
-               .send({
-                   user: {
-                       id: user._id,
-                       email: user.email,
-                       name: user.name
-                   },
-                   message: "Login Successful",
-                   accessToken: token,
-               });
-        });
-};
+
+        
+})
+
+function generateToken(id) {
+    const token = jwt.sign({
+        id: id
+    },  process.env.JWT_SECRET, { 
+        expiresIn: "1h"
+    })
+    return token;
+}
+
 
 module.exports = {
     register,
