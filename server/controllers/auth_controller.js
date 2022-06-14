@@ -3,6 +3,13 @@ const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
 
+
+
+const getMe = asyncHandler( async(req, res) => {
+    res.status(200).json(req.user)
+})
+
+
 const register = asyncHandler(async(req, res) => {
     
     const salt = await bcrypt.genSalt(10)
@@ -67,5 +74,6 @@ function generateToken(id) {
 
 module.exports = {
     register,
-    login
+    login,
+    getMe
 }

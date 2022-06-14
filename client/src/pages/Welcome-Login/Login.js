@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-import { TextField, Box, Button } from "@mui/material";
+import { TextField, Box, Button, Container } from "@mui/material";
 
 
 const defObj = {email: "", password: ""}
@@ -27,18 +27,17 @@ function Login() {
        setFormData(defObj)
     }
     return ( 
+        <Container fixed>
         <Box> 
             <h1>login</h1>
             <form onSubmit={(e) =>handleSubmit(e)}>
                 <TextField 
-                    id="outlined-name"
                     name='email'
                     label='email'
                     value={formData.email}
                     onChange={(e) =>handleChange(e)}
                     />
                 <TextField 
-                    id="outlined-name"
                     name='password' 
                     label='password' 
                     type='password'
@@ -52,6 +51,7 @@ function Login() {
                     >submit</Button>
             </form>
         </Box>
+        </Container>
      );
 }
 

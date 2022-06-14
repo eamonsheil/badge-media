@@ -5,8 +5,11 @@ const FeedOutline = styled.div`
     display: flex;
     flex-direction: column;
     border: 1px solid blue;
-    max-width: 100%;
+    /* max-width: 90%; */
     min-width: 40%;
+    @media (max-width: 899px) {
+        width: 90%;
+    }
 
 `
 

@@ -1,18 +1,24 @@
 import { BrowserRouter, Routes, Route, } from 'react-router-dom'
-import Login from './pages/Welcome-Login/Login';
-import Register from './pages/Welcome-Login/Register';
+
 import HomeContainer from './pages/Home/HomeContainer';
 import NavBar from './pages/NavBar/Navbar';
 import { GlobalStyle } from './Styles/GlobalStyle';
+import WelcomeLogin from './pages/Welcome-Login/WelcomeLogin';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    fetch(`/api/users/me`)
+  .then( res => res.json())
+  .then( data => console.log(data))
+  },[])
+
   return (
     <>
       <GlobalStyle/>
       <NavBar/>
       <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path='/' element={<WelcomeLogin />} />
         <Route path='/home' element={<HomeContainer />} />
       </Routes>
     </>
