@@ -1,19 +1,32 @@
 import FeedContainer from "./NewsFeed/FeedContainer";
 import ChatsContainer from "./Chats/ChatsContainer";
 import BadgesContainer from "./Badges/BadgesContainer";
+import styled from "styled-components";
+import { Container } from "../../Styles/Container.styled";
 
-
+const HomeGrid = styled.div`
+    display: flex;
+    /* column-gap: 1em; */
+    /* grid-template-columns: 30% 40% 30%; */
+    justify-content: space-between;
+    /* width: 100%; */
+    border: 1px solid red;
+    height: 100vh;
+    padding: 10em;
+`
 
 function HomeContainer() {
     return ( 
-        <div>
-            <h1>Home Container</h1>
+        <Container>
+        <HomeGrid>
+           
             <BadgesContainer/>
             <FeedContainer/>
             <ChatsContainer/>
             
 
-        </div>
+        </HomeGrid>
+        </Container>
      );
 }
 
