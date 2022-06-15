@@ -4,13 +4,15 @@ import HomeContainer from './pages/Home/HomeContainer';
 import NavBar from './pages/NavBar/Navbar';
 import { GlobalStyle } from './Styles/GlobalStyle';
 import WelcomeLogin from './pages/Welcome-Login/WelcomeLogin';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [user, setUser] = useState({});
+
   useEffect(() => {
     fetch(`/api/users/me`)
   .then( res => res.json())
-  .then( data => console.log(data))
+  .then( data => setUser(data))
   },[])
 
   return (

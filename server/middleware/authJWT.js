@@ -9,7 +9,6 @@ const verifyToken = asyncHandler( async(req, res, next) => {
 
             try {
             const decoded = jwt.verify(req.headers.cookie.split('=')[1], process.env.JWT_SECRET)
-            console.log(decoded)
 
             req.user = await User.findById(decoded.id)
 

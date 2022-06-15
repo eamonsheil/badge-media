@@ -22,14 +22,11 @@ const HomeGrid = styled.div`
 function HomeContainer() {
     return ( 
         <Container>
-        <HomeGrid>
-           
-            <BadgesContainer/>
-            <FeedContainer/>
-            <ChatsContainer/>
-            
-
-        </HomeGrid>
+            <HomeGrid>
+                <BadgesContainer/>
+                <FeedContainer/>
+                <ChatsContainer/>
+            </HomeGrid>
         </Container>
      );
 }
