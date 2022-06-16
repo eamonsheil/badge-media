@@ -1,10 +1,13 @@
 import {useState} from 'react';
 
+
 import { TextField, Box, Button, Container } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 
 const defObj = {email: "", password: ""}
 function Login() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState(defObj)
 
     function handleChange(e) {
@@ -25,6 +28,7 @@ function Login() {
        .then( data => console.log(data))
        .catch( error => console.log(error.message));
        setFormData(defObj)
+       navigate('/home')
     }
     return ( 
         <Container fixed>
